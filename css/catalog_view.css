@@ -1,0 +1,123 @@
+.kuang {
+    display: inline-block;
+    min-width: 56px;
+    height: 80px;
+    /*background-color: rgb(90, 245, 128);*/
+    /*box-shadow: 0 0 5px #121212;*/
+    margin: 0 6px;
+    /*padding: 0 6px;*/
+    text-align: center;
+    font-size: 18px;
+    border-radius: 2px;
+    border: 2px solid rgba(90, 245, 128, 0.1);
+    color: #1cddb1;
+    position: relative;
+}
+
+.content a:focus {
+    outline: none;
+    /*-moz-outline:none;*/
+}
+
+/*.content a:hover, .content a:active {
+    color: rgb(4, 221, 152);
+}
+*/
+.kuang:hover , .select{
+    /*outline: 1px #aeaeae solid;*/
+    box-shadow: 0 0 7px rgb(90, 245, 128);
+    cursor: pointer;
+    /*text-shadow: 0 0 3px #040404;*/
+    /*color: #d2f557;*/
+    /* color collocation link*/
+    /* http://www.peise.net/2016/0429/5566.html */
+    /*border-color: rgba(210, 245, 87, 0.3);*/
+    border-color: #1cddb1;
+}
+
+.kuang:active, .select {
+    border-radius: 0;
+    border-color: #1cddb1;
+}
+
+.kuang a {
+    color: white;
+    background-color: #1cddb1;
+    opacity: 0.5;
+}
+
+.kuang a:hover, .kuang a:focus {
+    opacity: 0.8;
+}
+
+.select a {
+    opacity: 1;
+}
+
+.kuang a span {
+    transition: font-size 0.4s;
+    height: 100%;
+}
+
+.kuang a span:hover {
+    text-decoration: underline;
+    font-size: 80%;
+}
+
+.kuang span {
+    display: inline-block;
+    width :100px;
+    height: 100%;
+    line-height: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-top: 0;
+}
+
+.kuang  input {
+    height: 24px;
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    color: black;
+    font-size: 80%;
+    display: none;
+    line-height: 24px;
+    text-align: center;
+}
+
+.kuang input:hover, .kuang input:focus {
+    box-shadow: 0 0 3px gray;
+}
+
+.file_type {
+    /*background-color: gray;*/
+    margin: 1px 0 0 0;
+    height: 70%; 
+    padding: 0;
+}
+
+.file_name {
+    position: relative;
+}
+
+.file_name:hover, .file_name:focus {
+    background-color: rgba(217, 217, 217, 0.2);
+}
+
+.test {
+    outline: 1px dashed red;
+}
+
+.template {
+    display: none;
+}
+
+.pop-up_window {
+    width: 100%;
+    height: 200px;
+    background: black;
+    opacity: 0.5;
+}
