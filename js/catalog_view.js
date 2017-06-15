@@ -40,18 +40,15 @@ $(document).ready(function() {
         // deter mine whether it is a file
         // 判定是否为文件
         // if($(this).find('i').attr('class').toString().indexOf('folder') === -1) {
-        //     alert('cannt open ');
+        //     warningWindow('Error', 'can\'t open file');
         //     return;
         // }
+
         window.history.pushState({}, 0, SEARCH_PATH + "?open=" + escape($(this).attr('title')));
         var url = window.location.href ;
         loading(url);
         window.history.pushState({}, 0, currentDirectory + escape($(this).attr('title')) + '/');
     });
-
-    // pop-up window set
-    $('#myModal').modal('toggle');
-    alert('to this !');
 });
 
 $(document).keydown(function(e) {
@@ -66,7 +63,7 @@ function openDir() {
             $("#content").empty();
             var returnData = eval('(' + request.responseText + ')');
             if(isError(returnData)) {
-                alert('error: ' + returnData.text);
+                warningWindow(returnData.type, returnData.text);
                 return;
             }
             for(var arr in returnData) {
@@ -81,6 +78,8 @@ function openDir() {
 }
 
 function loading(url, async = 'true') {
+    // loading icon
+    $('#content').append($('#loading').clone().removeClass('template'));
     request.open('GET', url, async);
     request.onreadystatechange = openDir;
     request.send(null);
@@ -103,4 +102,11 @@ function isError(jsonObject) {
     if(jsonObject.type == 'error')
         return true;
     return false;
+}
+
+// warning window , 
+function warningWindow(title, text) {
+    $('#pop-up-window #myModalLabel').addClass('red').text(title);
+    $('#pop-up-window .modal-body').text(text);
+    $('#pop-up-window').modal('toggle');
 }

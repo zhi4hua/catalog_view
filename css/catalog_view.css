@@ -7,11 +7,15 @@
     margin: 0 6px;
     /*padding: 0 6px;*/
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     border-radius: 2px;
     border: 2px solid rgba(90, 245, 128, 0.1);
     color: #1cddb1;
     position: relative;
+}
+
+.theme_color{
+    color: #1cddb1;
 }
 
 .content a:focus {
@@ -116,8 +120,18 @@
 }
 
 .pop-up_window {
+    background-color: gray;
     width: 100%;
-    height: 200px;
-    background: black;
-    opacity: 0.5;
+    height: 10em;
+}
+
+.red {
+    color: red;
+}
+
+/* loading css */
+.loading {
+    width: 100%;
+    height: 100%;
+    background-color: gray;
 }
