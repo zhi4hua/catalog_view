@@ -1,4 +1,6 @@
 <?php
+    
+
     // default scan address
     define(DEFAULT_PATH, './');
     define(WEBSITE_ADDR, $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME']);
@@ -14,18 +16,37 @@
     if(!isset($dir))
         $dir = DEFAULT_PATH;
     if (isset($_GET['open'])) {
+        if(empty($_SERVER['HTTP_REFERER'])) {
+                //跳转到网站首页,获取来源网址,即点击来到本页的上页网址
+                // Jump to the homepage of the website
+                header('Location:'.WEBSITE_ADDR);
+                exit();
+        }
         if(!is_dir($dir.$_GET['open'])){
             $jsonData['type'] = 'error';
             $jsonData['text'] = 'not folder';
             echo json_encode((object)$jsonData);
             return;
         }
-
-        $dir = $_GET['open'].'/';
     }
+
+    $dir = $_GET['open'].'/';
 	$file = scandir($dir);
+    if (!$file) {
+        die('to this !');
+        $jsonData['type'] = 'error';
+        $jsonData['text'] = 'file read failed';
+        echo json_encode($jsonData);
+        return;
+    }  
+
     $jsonData = array();
     foreach ($file as $key => $value) {
+        // Hide does not display files
+        // 隐藏不显示文件
+        if (0 === strpos($value, '.')) {
+            continue;
+        }
         $icon_class = is_dir($dir.$value) ? ICON_FOLDER : ICON_FILE;
         $icon_class.= ' '.SIZE_ICON;
 

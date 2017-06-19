@@ -12,7 +12,12 @@ $(document).ready(function() {
     loading(url, false);
     window.history.pushState({}, 0, window.location.protocol + '//' +document.domain + '/' );
 
+    // Align vertically to make the file Icon
+    // 竖直对齐，使文件图标
     $('.file_type i').css('line-height' , $('.file_type').css('height'));
+    // Align vertically to make the name of the file 
+    // 竖直对齐，使文件的名称
+    $('.file_name span').css('line-height', $('.file_name').css('height'));
     
     $('body').click(function(e) {
         var _con = $('.kuang');
@@ -39,11 +44,10 @@ $(document).ready(function() {
     $('.kuang').dblclick(function() {
         // deter mine whether it is a file
         // 判定是否为文件
-        // if($(this).find('i').attr('class').toString().indexOf('folder') === -1) {
-        //     warningWindow('Error', 'can\'t open file');
-        //     return;
-        // }
-
+        if($(this).find('i').attr('class').toString().indexOf('folder') === -1) {
+            warningWindow('Error', 'can\'t open file');
+            return;
+        }
         window.history.pushState({}, 0, SEARCH_PATH + "?open=" + escape($(this).attr('title')));
         var url = window.location.href ;
         loading(url);
