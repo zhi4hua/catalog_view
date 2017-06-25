@@ -2,7 +2,7 @@
     
 
     // default scan address
-    define(DEFAULT_PATH, './');
+    define(DEFAULT_PATH, '.');
     define(WEBSITE_ADDR, $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME']);
     define(ICON_FILE, 'fa fa-file-o');
     define(ICON_FOLDER, 'fa fa-folder');
@@ -16,13 +16,15 @@
     if(!isset($dir))
         $dir = DEFAULT_PATH;
     if (isset($_GET['open'])) {
-        if(empty($_SERVER['HTTP_REFERER'])) {
-                //跳转到网站首页,获取来源网址,即点击来到本页的上页网址
-                // Jump to the homepage of the website
-                header('Location:'.WEBSITE_ADDR);
-                exit();
-        }
-        if(!is_dir($dir.$_GET['open'])){
+        // if(empty($_SERVER['HTTP_REFERER'])) {
+        //         //跳转到网站首页,获取来源网址,即点击来到本页的上页网址
+        //         // Jump to the homepage of the website
+        //         header('Location:'.WEBSITE_ADDR);
+        //         exit();
+        // }
+        $dir = str_replace(WEBSITE_ADDR, DEFAULT_PATH, $_GET['open']);
+        $dir .= '/';
+        if(!is_dir($dir)){
             $jsonData['type'] = 'error';
             $jsonData['text'] = 'not folder';
             echo json_encode((object)$jsonData);
@@ -30,10 +32,14 @@
         }
     }
 
-    $dir = $_GET['open'].'/';
+    // Get web site address information
+    // 获取网站地址信息
+    // $url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    // echo '$url = '.$url.nl2br("\n");
+    // $dir = $_GET['open'].'/';
 	$file = scandir($dir);
+    // echo 'dir = '.$dir.nl2br("\n");
     if (!$file) {
-        die('to this !');
         $jsonData['type'] = 'error';
         $jsonData['text'] = 'file read failed';
         echo json_encode($jsonData);
