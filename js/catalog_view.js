@@ -48,11 +48,20 @@ $(document).ready(function() {
             warningWindow('Error', 'can\'t open file');
             return;
         }
-        window.history.pushState({}, 0, SEARCH_PATH + "?open=" + escape($(this).attr('title')));
-        var url = window.location.href ;
-        loading(url);
-        window.history.pushState({}, 0, currentDirectory + escape($(this).attr('title')) + '/');
+
+        // change website address
+        // 改变网站地址
+        window.history.pushState({}, 0, encodeURI(currentDirectory + $(this).attr('title') + '/'));
+        loading(encodeURI(SEARCH_PATH + "?open=" + window.location.href ));
+        currentDirectory = window.location.href;
+
+        // current path 
+        if ($('#path li').length !== 1)
+            $('#path li:last').html('<a' + currentDirectory + '>' + $('#path li:last').html() + '</a>');
+
+        $('#path .breadcrumbMine').append('<li>' +$(this).attr('title') + '</li>');
     });
+
 });
 
 $(document).keydown(function(e) {
