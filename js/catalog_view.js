@@ -10,7 +10,7 @@ $(document).ready(function() {
     }
     var url = SEARCH_PATH + '?open=.';
     loading(url, false);
-    window.history.pushState({}, 0, window.location.protocol + '//' +document.domain + '/' );
+    // window.history.pushState({}, 0, window.location.protocol + '//' + document.domain + '/' );
 
     // Align vertically to make the file Icon
     // 竖直对齐，使文件图标
@@ -19,7 +19,7 @@ $(document).ready(function() {
     // 竖直对齐，使文件的名称
     $('.file_name span').css('line-height', $('.file_name').css('height'));
     
-    $('body').click(function(e) {
+    $('body').click(function(e) {        
         var _con = $('.kuang');
 
         if($(e.target).is('input'))
@@ -41,6 +41,9 @@ $(document).ready(function() {
         $(this).hide();
     });
 
+
+    // dblclick event, and start when you double click class .kuang
+    // 双击事件，如果双击类 kuang 时启动
     $('.kuang').dblclick(function() {
         // deter mine whether it is a file
         // 判定是否为文件
@@ -49,25 +52,34 @@ $(document).ready(function() {
             return;
         }
 
+
+        // Generate directory addresses
+        // 生成目录地址
+        if ($('#path li').length !== 1) {
+            var lastLi = $('#path li:last');
+            lastLi.html('<a href=' + window.location.href + ' alt="' + lastLi.text() + '">' + lastLi.text() + '</a>');
+        }
+
         // change website address
         // 改变网站地址
         window.history.pushState({}, 0, encodeURI(currentDirectory + $(this).attr('title') + '/'));
         loading(encodeURI(SEARCH_PATH + "?open=" + window.location.href ));
         currentDirectory = window.location.href;
 
-        // current path 
-        if ($('#path li').length !== 1)
-            $('#path li:last').html('<a' + currentDirectory + '>' + $('#path li:last').html() + '</a>');
-
         $('#path .breadcrumbMine').append('<li>' +$(this).attr('title') + '</li>');
-    });
 
+        // click path link 
+        // 点击路径链接
+        $('#path li a').click(function(event) {
+            event.preventDefault();
+        });
+    });
 });
 
 $(document).keydown(function(e) {
-            if(e.keyCode == 13) {
-                $(e.target).blur();
-            }
+    if(e.keyCode == 13) {
+        $(e.target).blur();
+    }
 });
 
 function openDir() {
@@ -80,7 +92,7 @@ function openDir() {
                 return;
             }
             for(var arr in returnData) {
-                var itm = $('.template.kuang').clone();
+                var itm = $('.template.kuang').clone('true');
                 itm.removeClass('template').attr({'title': returnData[arr].fileName, 'alt': returnData[arr].fileName});
                 itm.children().children().first().addClass(returnData[arr].fileType);
                 itm.find('span').text(returnData[arr].fileName);
