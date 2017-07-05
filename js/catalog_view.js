@@ -8,9 +8,9 @@ $(document).ready(function() {
         alert("Unable to create request");
         return ;
     }
-    var url = SEARCH_PATH + '?open=.';
+    window.history.pushState({}, 0, window.location.href.replace(window.location.pathname, '/') );
+    var url = SEARCH_PATH + '?open=' + window.location.href;
     loading(url, false);
-    // window.history.pushState({}, 0, window.location.protocol + '//' + document.domain + '/' );
 
     // Align vertically to make the file Icon
     // 竖直对齐，使文件图标
@@ -60,6 +60,13 @@ $(document).ready(function() {
             lastLi.html('<a href=' + window.location.href + ' alt="' + lastLi.text() + '">' + lastLi.text() + '</a>');
         }
 
+        // Make the tag "a" jump function paused
+        // 使标签 a 跳转功能暂停
+        // $('#path li > a:last').click(function(event) {
+        //     event.preventDefault();
+        //     $(this).addClass('test');
+        // });
+
         // change website address
         // 改变网站地址
         window.history.pushState({}, 0, encodeURI(currentDirectory + $(this).attr('title') + '/'));
@@ -67,12 +74,13 @@ $(document).ready(function() {
         currentDirectory = window.location.href;
 
         $('#path .breadcrumbMine').append('<li>' +$(this).attr('title') + '</li>');
+    });
 
-        // click path link 
-        // 点击路径链接
-        $('#path li a').click(function(event) {
-            event.preventDefault();
-        });
+    // click path link 
+    // 点击路径链接
+    $('#path li > a').each(function(event) {
+        // event.preventDefault();
+        return false;
     });
 });
 
@@ -91,11 +99,13 @@ function openDir() {
                 warningWindow(returnData.type, returnData.text);
                 return;
             }
-            for(var arr in returnData) {
+            // add breadcrum lik data
+            var fileList = returnData.fileList;
+            for(var arr in fileList) {
                 var itm = $('.template.kuang').clone('true');
-                itm.removeClass('template').attr({'title': returnData[arr].fileName, 'alt': returnData[arr].fileName});
-                itm.children().children().first().addClass(returnData[arr].fileType);
-                itm.find('span').text(returnData[arr].fileName);
+                itm.removeClass('template').attr({'title': fileList[arr].fileName, 'alt': fileList[arr].fileName});
+                itm.children().children().first().addClass(fileList[arr].fileType);
+                itm.find('span').text(fileList[arr].fileName);
                 $('#content').append(itm);
             }
         }

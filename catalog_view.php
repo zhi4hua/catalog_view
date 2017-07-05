@@ -32,11 +32,6 @@
         }
     }
 
-    // Get web site address information
-    // 获取网站地址信息
-    // $url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-    // echo '$url = '.$url.nl2br("\n");
-    // $dir = $_GET['open'].'/';
 	$file = scandir($dir);
     // echo 'dir = '.$dir.nl2br("\n");
     if (!$file) {
@@ -46,22 +41,34 @@
         return;
     }  
 
-    $jsonData = array();
+    $file_list = array();
     foreach ($file as $key => $value) {
         // Hide does not display files
         // 隐藏不显示文件
-        if (0 === strpos($value, '.')) {
+        if ('.' === $value) {
             continue;
         }
+        if('..' === $value)
+            continue;
         $icon_class = is_dir($dir.$value) ? ICON_FOLDER : ICON_FILE;
         $icon_class.= ' '.SIZE_ICON;
 
         // json data
-        array_push($jsonData, array("fileName"=> $value, "fileType"=> $icon_class));
+        array_push($file_list, array("fileName"=> $value, "fileType"=> $icon_class));
     }
 
+    // Returns the query directory name
+    // 返回被查询目录名
+    if ($dir == './/')
+        $dir_name = 'home';
+
+    $jsonData = array( 
+                        'directory' => $dir_name,
+                        'fileList'=> $file_list
+                       );
     // return JSON
     if(isset($_GET['open'])) {
+        header('Cache-Control: private');
         echo json_encode((object)$jsonData);
     }
     
