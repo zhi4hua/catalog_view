@@ -11,19 +11,16 @@
     // verify logon
     // to be continued 
 
-    // if (!isset($_GET['open']))
-    //     ob_start();
     if(!isset($dir))
         $dir = DEFAULT_PATH;
     if (isset($_GET['open'])) {
-        // if(empty($_SERVER['HTTP_REFERER'])) {
-        //         //跳转到网站首页,获取来源网址,即点击来到本页的上页网址
-        //         // Jump to the homepage of the website
-        //         header('Location:'.WEBSITE_ADDR);
-        //         exit();
-        // }
+        if(empty($_SERVER['HTTP_REFERER'])) {
+                //跳转到网站首页,获取来源网址,即点击来到本页的上页网址
+                // Jump to the homepage of the website
+                header('Location:'.WEBSITE_ADDR);
+                exit();
+        }
         $dir = str_replace(WEBSITE_ADDR, DEFAULT_PATH, $_GET['open']);
-        $dir .= '/';
         if(!is_dir($dir)){
             $jsonData['type'] = 'error';
             $jsonData['text'] = 'not folder';
@@ -59,11 +56,19 @@
 
     // Returns the query directory name
     // 返回被查询目录名
-    if ($dir == './/')
+    if ($dir == './') {
         $dir_name = 'home';
+    } else {
+        $dir_array = explode('/', $dir);
+        $dir_name = $dir_array[(int) count($dir_array) - 2];
+        // explode — 使用一个字符串分割另一个字符串
+        // http://php.net/manual/zh/function.explode.php
+    }
+    $dir = str_replace('./', WEBSITE_ADDR.'/', $dir);
 
     $jsonData = array( 
                         'directory' => $dir_name,
+                        'link' => $_GET['open'],
                         'fileList'=> $file_list
                        );
     // return JSON

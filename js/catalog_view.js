@@ -52,35 +52,12 @@ $(document).ready(function() {
             return;
         }
 
-
-        // Generate directory addresses
-        // 生成目录地址
-        if ($('#path li').length !== 1) {
-            var lastLi = $('#path li:last');
-            lastLi.html('<a href=' + window.location.href + ' alt="' + lastLi.text() + '">' + lastLi.text() + '</a>');
-        }
-
-        // Make the tag "a" jump function paused
-        // 使标签 a 跳转功能暂停
-        // $('#path li > a:last').click(function(event) {
-        //     event.preventDefault();
-        //     $(this).addClass('test');
-        // });
-
         // change website address
         // 改变网站地址
         window.history.pushState({}, 0, encodeURI(currentDirectory + $(this).attr('title') + '/'));
         loading(encodeURI(SEARCH_PATH + "?open=" + window.location.href ));
         currentDirectory = window.location.href;
 
-        $('#path .breadcrumbMine').append('<li>' +$(this).attr('title') + '</li>');
-    });
-
-    // click path link 
-    // 点击路径链接
-    $('#path li > a').each(function(event) {
-        // event.preventDefault();
-        return false;
     });
 });
 
@@ -99,7 +76,11 @@ function openDir() {
                 warningWindow(returnData.type, returnData.text);
                 return;
             }
-            // add breadcrum lik data
+            
+            // Generate directory addresses
+            // 生成目录地址
+            $('<li><a href="' + returnData.link + '">' + returnData.directory + '<a></li>').appendTo($('.breadcrumbMine'));
+            redefiningATag();
             var fileList = returnData.fileList;
             for(var arr in fileList) {
                 var itm = $('.template.kuang').clone('true');
@@ -144,4 +125,14 @@ function warningWindow(title, text) {
     $('#pop-up-window #myModalLabel').addClass('red').text(title);
     $('#pop-up-window .modal-body').text(text);
     $('#pop-up-window').modal('toggle');
+}
+
+// Redefining the a link
+// 重新定义a链接
+function redefiningATag() {
+    $('#path a').each(function(i, event) {
+        // event.preventDefault();
+        event.cancelable ? alert('Yes, have prevent default') : alert('No, not prevent defalut');
+        $(this).addClass('test');
+    });
 }
