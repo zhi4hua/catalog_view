@@ -1,8 +1,6 @@
 <?php
-    
-
     // default scan address
-    define(DEFAULT_PATH, '.');
+    define(DEFAULT_PATH, './');
     define(WEBSITE_ADDR, $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME']);
     define(ICON_FILE, 'fa fa-file-o');
     define(ICON_FOLDER, 'fa fa-folder');
@@ -13,13 +11,18 @@
 
     if(!isset($dir))
         $dir = DEFAULT_PATH;
+    // test code , for web site hostinger
+    // 测试代码，用于网站 hostinger
+    // if(!isset($_GET['open']))
+    //     $_GET['open'] = WEBSITE_ADDR;
+
     if (isset($_GET['open'])) {
-        if(empty($_SERVER['HTTP_REFERER'])) {
-                //跳转到网站首页,获取来源网址,即点击来到本页的上页网址
-                // Jump to the homepage of the website
-                header('Location:'.WEBSITE_ADDR);
-                exit();
-        }
+        // if(empty($_SERVER['HTTP_REFERER'])) {
+        //         //跳转到网站首页,获取来源网址,即点击来到本页的上页网址
+        //         // Jump to the homepage of the website
+        //         header('Location:'.WEBSITE_ADDR);
+        //         exit();
+        // }
         $dir = str_replace(WEBSITE_ADDR, DEFAULT_PATH, $_GET['open']);
         if(!is_dir($dir)){
             $jsonData['type'] = 'error';
@@ -64,7 +67,6 @@
         // explode — 使用一个字符串分割另一个字符串
         // http://php.net/manual/zh/function.explode.php
     }
-    $dir = str_replace('./', WEBSITE_ADDR.'/', $dir);
 
     $jsonData = array( 
                         'directory' => $dir_name,

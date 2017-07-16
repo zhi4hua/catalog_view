@@ -8,8 +8,8 @@ $(document).ready(function() {
         alert("Unable to create request");
         return ;
     }
-    window.history.pushState({}, 0, window.location.href.replace(window.location.pathname, '/') );
-    var url = SEARCH_PATH + '?open=' + window.location.href;
+    window.history.pushState({}, 0, window.location.href.replace(window.location.pathname, '/'));
+    var url = SEARCH_PATH + '?open=' + window.location.protocol + '//' +document.domain;
     loading(url, false);
 
     // Align vertically to make the file Icon
@@ -79,8 +79,12 @@ function openDir() {
             
             // Generate directory addresses
             // 生成目录地址
-            $('<li><a href="' + returnData.link + '">' + returnData.directory + '<a></li>').appendTo($('.breadcrumbMine'));
-            redefiningATag();
+            $('<li><a href="' + returnData.link + '">' + returnData.directory + '</a></li>').click(function(event) {
+                window.history.pushState({}, 0, encodeURI(event.target.href));
+                loading(encodeURI(SEARCH_PATH + '?open=' + window.location.href));
+                event.preventDefault();
+            }).appendTo($('.breadcrumbMine'));;
+            // redefiningATag();
             var fileList = returnData.fileList;
             for(var arr in fileList) {
                 var itm = $('.template.kuang').clone('true');
@@ -125,14 +129,4 @@ function warningWindow(title, text) {
     $('#pop-up-window #myModalLabel').addClass('red').text(title);
     $('#pop-up-window .modal-body').text(text);
     $('#pop-up-window').modal('toggle');
-}
-
-// Redefining the a link
-// 重新定义a链接
-function redefiningATag() {
-    $('#path a').each(function(i, event) {
-        // event.preventDefault();
-        event.cancelable ? alert('Yes, have prevent default') : alert('No, not prevent defalut');
-        $(this).addClass('test');
-    });
 }
