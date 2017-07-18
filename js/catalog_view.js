@@ -57,7 +57,6 @@ $(document).ready(function() {
         window.history.pushState({}, 0, encodeURI(currentDirectory + $(this).attr('title') + '/'));
         loading(encodeURI(SEARCH_PATH + "?open=" + window.location.href ));
         currentDirectory = window.location.href;
-
     });
 });
 
@@ -76,14 +75,21 @@ function openDir() {
                 warningWindow(returnData.type, returnData.text);
                 return;
             }
-            
+
+            // if directory empty alert
+            if(!returnData.directory)
+                alert('returnData.directory = ' + returnData.directory);
             // Generate directory addresses
             // 生成目录地址
             $('<li><a href="' + returnData.link + '">' + returnData.directory + '</a></li>').click(function(event) {
+                // remove superfluous options
+                while(this.nextSibling)
+                    this.nextSibling.remove();
+                this.remove();
                 window.history.pushState({}, 0, encodeURI(event.target.href));
                 loading(encodeURI(SEARCH_PATH + '?open=' + window.location.href));
                 event.preventDefault();
-            }).appendTo($('.breadcrumbMine'));;
+            }).appendTo($('.breadcrumbMine'));
             // redefiningATag();
             var fileList = returnData.fileList;
             for(var arr in fileList) {
