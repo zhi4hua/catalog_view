@@ -1,6 +1,7 @@
 <?php
     // default scan address
     define(DEFAULT_PATH, './');
+    define(DEFAULT_NAME, 'home');
     define(WEBSITE_ADDR, $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME']);
     define(ICON_FILE, 'fa fa-file-o');
     define(ICON_FOLDER, 'fa fa-folder');
@@ -16,6 +17,12 @@
     // if(!isset($_GET['open']))
     //     $_GET['open'] = WEBSITE_ADDR;
 
+    if($_SERVER['HTTP_REFERER'] == WEBSITE_ADDR) {
+        $jsonData['type'] = 'error';
+        $jsonData['text'] = 'Test coding';
+        echo json_encode((object)$jsonData);
+        // $_GET['open'] = DEFAULT_PATH;
+    }
     if (isset($_GET['open'])) {
         // if(empty($_SERVER['HTTP_REFERER'])) {
         //         //跳转到网站首页,获取来源网址,即点击来到本页的上页网址
@@ -30,6 +37,10 @@
             echo json_encode((object)$jsonData);
             return;
         }
+    } else {
+        $jsonData['type'] = 'error';
+        $jsonData['text'] = '$_GET[\'open\'] is nothing!';
+        echo json_encode((object)$jsonData);
     }
 
 	$file = scandir($dir);
@@ -59,8 +70,8 @@
 
     // Returns the query directory name
     // 返回被查询目录名
-    if ($dir == './') {
-        $dir_name = 'home';
+    if ($_GET['open'] == WEBSITE_ADDR || $_GET['open'] == WEBSITE_ADDR.'/') {
+        $dir_name = DEFAULT_NAME;
     } else {
         $dir_array = explode('/', $dir);
         $dir_name = $dir_array[(int) count($dir_array) - 2];
