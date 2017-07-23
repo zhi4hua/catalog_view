@@ -1,5 +1,4 @@
 var SEARCH_PATH = window.location.protocol + '//' +document.domain + '/catalog_view.php';
-var currentDirectory = (window.location.href + "").substr(0, window.location.href.indexOf(window.location.pathname) + 1);
 
 $(document).ready(function() {
     // connect website and get data
@@ -54,9 +53,8 @@ $(document).ready(function() {
 
         // change website address
         // 改变网站地址
-        window.history.pushState({}, 0, encodeURI(currentDirectory + $(this).attr('title') + '/'));
+        window.history.pushState({}, 0, encodeURI(window.location.href + $(this).attr('title') + '/'));
         loading(encodeURI(SEARCH_PATH + "?open=" + window.location.href ));
-        currentDirectory = window.location.href;
     });
 });
 
@@ -68,6 +66,8 @@ $(document).keydown(function(e) {
 
 function openDir() {
     if(request.readyState == 4) {
+        if(!request.status)
+            alert('status = ' + request.status);
         if (request.status == 200) {
             $("#content").empty();
             var returnData = eval('(' + request.responseText + ')');
@@ -81,22 +81,23 @@ function openDir() {
                 alert('returnData.directory = ' + returnData.directory);
             // Generate directory addresses
             // 生成目录地址
-            $('<li><a href="' + returnData.link + '">' + returnData.directory + '</a></li>').click(function(event) {
+            $('<li><a href="' + returnData.link + '">' + returnData.directory + '</a></li>').bind('click', function(event) {
                 // remove superfluous options
                 while(this.nextSibling)
                     this.nextSibling.remove();
                 this.remove();
                 window.history.pushState({}, 0, encodeURI(event.target.href));
-                loading(encodeURI(SEARCH_PATH + '?open=' + window.location.href));
+                loading(encodeURI(SEARCH_PATH + '?open=' + event.target.href));
                 event.preventDefault();
-            }).appendTo($('.breadcrumbMine'));
+            }).fadeIn().appendTo($('.breadcrumbMine'));
+
             // redefiningATag();
             var fileList = returnData.fileList;
             for(var arr in fileList) {
                 var itm = $('.template.kuang').clone('true');
                 itm.removeClass('template').attr({'title': fileList[arr].fileName, 'alt': fileList[arr].fileName});
                 itm.children().children().first().addClass(fileList[arr].fileType);
-                itm.find('span').text(fileList[arr].fileName);
+                itm.children().next().children().children().text(fileList[arr].fileName);
                 $('#content').append(itm);
             }
         }
