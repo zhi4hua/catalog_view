@@ -79,17 +79,23 @@ function openDir() {
             // if directory empty alert
             if(!returnData.directory)
                 alert('returnData.directory = ' + returnData.directory);
-            // Generate directory addresses
-            // 生成目录地址
-            $('<li><a href="' + returnData.link + '">' + returnData.directory + '</a></li>').bind('click', function(event) {
+            $('<li></li>').fadeIn('fast').appendTo($('.breadcrumbMine')).append($('<a href="' + returnData.link + '">' + returnData.directory + '</a>').bind('click', function(event) {
+                // Generate directory addresses
+                // 生成目录地址
+                event.preventDefault();
+                if (this.className == 'current_directory')
+                    return;
                 // remove superfluous options
-                while(this.nextSibling)
-                    this.nextSibling.remove();
-                this.remove();
+                while (this.parentNode.nextSibling) {
+                    this.parentNode.nextSibling.remove();
+                }
+                this.parentNode.remove();
                 window.history.pushState({}, 0, encodeURI(event.target.href));
                 loading(encodeURI(SEARCH_PATH + '?open=' + event.target.href));
-                event.preventDefault();
-            }).fadeIn().appendTo($('.breadcrumbMine'));
+            }));
+            // $('.breadcrumbMine .current_directory').removeClass('current_directory').addClass('disabled');
+            $('.breadcrumbMine .current_directory').removeClass('current_directory');
+            $(".breadcrumbMine li a:last").addClass('current_directory');
 
             // redefiningATag();
             var fileList = returnData.fileList;
