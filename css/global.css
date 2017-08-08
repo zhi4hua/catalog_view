@@ -1,0 +1,19 @@
+/* style file for page all html */
+/* 样式文件，用于所有 html 页面 */
+/* auther : Jimmy Wu */
+
+.theme_color{
+    color: #1cddb1;
+}
+
+.theme_background_color {
+    background-color: #1cddb1;
+}
+
+.hover_theme_color:hover, .hover_theme_color:focus {
+    outline: #1cddb1 1px solid;
+}
+
+.white_color {
+    color: white;
+}
