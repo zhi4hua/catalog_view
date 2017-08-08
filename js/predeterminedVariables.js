@@ -1,0 +1,1 @@
+var SEARCH_PATH = window.location.protocol + '//' +document.domain + '/catalog_view.php';
