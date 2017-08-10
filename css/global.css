@@ -17,3 +17,37 @@
 .white_color {
     color: white;
 }
+
+.template {
+    display: none !important ;
+}
+
+/* loading css */
+.loading {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    vertical-align: bottom;
+    background-color: rgba(128, 128, 128, 0.5);
+    position: absolute;
+    left: 0;
+    top: 0;
+    text-align: center;
+}
+
+.gray {
+    color: #666;
+}
+
+/* animate  */
+.animate-text-hover {
+    transition: all 0.2s ;
+}
+
+.animate-text-hover:hover{
+    text-shadow: 0 4px 4px gray;
+}
+
+.animate-box-hover:hover {
+    box-shadow: 0 4px 4px gray;    
+}
