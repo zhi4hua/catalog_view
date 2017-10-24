@@ -43,31 +43,26 @@
             if (Database::getDB()) {
                 // verify that it is repeated
                 if (User::repeat($newUser)) {
-                    // get result
-                    $returnData .= 'failed , repeating register! '. $result;
+                    $returnData['type'] = 'error';
+                    $returnData['text'] .= 'Registration failed because the email address has been registered! Please change or log in directly!<br>注册失败，原因该邮件地址已经注册！请换个，或直接<a href="'. LOGIN_PATH. '">登录</a>';
                     
-                }
-                else {                    
+                } else {                    
                     // register user
                     User::addAUser($newUser);
-                    $returnData = 'login was successful!'.nl2br("\n");
+                    // $returnData = 'login was successful!login addr : '. LOGIN_PATH.nl2br("\n");
+                    $returnData['type'] = 'success';
+                    $returnData['link'] = LOGIN_PATH;
+                    echo json_encode($returnData);
+                    return ;
                 }
             } else {
-                $returnData = $dbLink->getErrorText();
-                $returnData = '请联系网站客服，说明无法访问数据库!Please contact the website customer service, indicating that you cannot access the database';
+                $returnData['type'] = 'error';
+                $returnData['text'] = $dbLink->getErrorText();
+                $returnData['text'] = '请联系网站客服，说明无法访问数据库!Please contact the website customer service, indicating that you cannot access the database';
             }
-
-            // if ($newUser->error){
-            //     // error code
-            // } else {
-            //     $newUser->register();
-            //     // view OK data
-            //     // header login
-            //     header('localhost:'.LOGINPATH);
-            // }
         } else
             $returnData = 'error! password : '.$userPassword.' Confirm password : '.$userConfirmPassword.' mail : '.$userMail;
-        echo ($returnData);
+        echo json_encode($returnData);
         return ;
     }
 
@@ -93,7 +88,7 @@
                     <br>
                     <br> -->
                     <label for="youMail">电子邮件地址</label>
-                    <input type="email" name="youMail" maxlength="64" class="wide hover_theme_color" value="<?php echo $userMail; ?>">
+                    <input type="email" name="youMail" maxlength="64" class="wide hover_theme_color" value="<?php echo $userMail; ?>"  >
                     <br>
                     <br>
                     <label for="youPassword">密码</label>
@@ -107,8 +102,8 @@
                         <input type="checkbox" id="youCheck" name="youCheck" class="middle hover_theme_color">
                         <span class="a-checkbox-label black">我已阅读并同意网站的使用条件及隐私声明</span>
                     </label>
-                    <input type="submit" name="" value="继续" class="wide theme_background_color hover_theme_color white_color center theme_border_color">
-                    <div class="wide">
+                    <input type="submit" name="submit" value="继续" class="wide theme_background_color hover_theme_color white_color center theme_border_color" id="mySubmit">
+                    <div class="wide" >
                         <span class="small-font">
                             已拥有帐户？
                                 <a href="<?php echo LOGIN_PATH; ?>">登录</a>

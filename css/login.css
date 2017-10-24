@@ -2,59 +2,6 @@
 /* 样式文件，用于页面 login.html */
 /* auther : Jimmy Wu */
 
-/* login frame */
-.login_frame {
-    width: 100%;
-    height: 100%;
-    display: table;
-    position: absolute;
-}
-
-.middle {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-/* Mobile Edition */
-@media (max-width: 600px), (max-height: 392px) {
-    .middle{
-        vertical-align: top;
-    }
-}
-
-.login {
-    width:calc(100% - 40px);
-    min-width: 320px;
-    max-width: 412px;
-    padding: 36px;
-    margin: auto;
-    min-height: 364px;
-    box-shadow:0 2px 3px rgba(0, 0, 0, 0.55);
-    position:relative;
-}
-
-/* Mobile Edition */
-@media (max-width: 600px), (max-height: 392px) {
-    .login {
-        width:100%;
-        box-shadow: none;
-        outline: none;
-    }
-}
-
-/* Test css */
-.test {
-    border:1px red dashed;
-}
-
-/* logo style */
-.logo {
-}
-
-.wide {
-    width: 100%;
-}
-
 input {
     height: 36px;
     /*outline: 1px solid gray;*/
@@ -68,7 +15,6 @@ input[type="submit"] {
     outline: none;
     border:none;
 }
-
 .disabled {
     background-color: gray;
 }

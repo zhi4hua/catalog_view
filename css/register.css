@@ -36,16 +36,33 @@
     font-size: 12px;
 }
 
+.small-font {
+    font-size: 12px;
+    font-weight: 400;
+}
+
 .background-image {
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.background-color-white {
-    background-color: white;
-}
-
 #register {
     border-radius: 8px; 
+}
+
+.tooltip.bottom .tooltip-arrow{
+    border-bottom-color: #e11;
+}
+
+.tooltip > .tooltip-inner {
+    background-color: #e11;
+}
+
+.error-text {
+    color: #d44950;
+}
+
+input.wait {
+    cursor: not-allowed !important;
 }
