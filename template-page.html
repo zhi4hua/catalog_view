@@ -22,21 +22,34 @@
          <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="myBody">
+<body>
     <noscript>
         <h1>SWEET! Please open the browser JavaScript function</h1>
         <h1>请开启浏览器的JavaScript功能</h1>
     </noscript>
 
+    <!-- User information -->
+    <div class="nav  breadcrumbMine" id="nav">
+        <ul class="nav  menubar-height dropdown-menu-right pull-right">
+            <li>
+                <a class="btn dropdown-toogle theme_color haver_color"data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenu1" href="#"><i class="fa fa-user-o fa-fw"></i>&nbsp;&nbsp;<span>zhi4hua</span>&nbsp;&nbsp;<span class="caret"></span></a>
+                <ul class="dropdown-menu same-width" aria-labelledby="dropdownMenu1">
+                    <li class="wide"><a class="btn theme_color" href="#">Setting</a></li>
+                    <li class="wide"><a class="btn theme_color" href="#">about</a></li>
+                </ul>
+            </li>
+            <li ><a class="btn theme_color haver_color" href="#">exit</a></li>
+        </ul>
+    </div>
     <!-- path div  -->
-    <div id="path" class="path">
+    <div id="path" class="path nav">
         <ul class="breadcrumbMine">
         </ul>
     </div>
     <div id="content" class="content">
     </div>
-    <div class="kuang template" title="file name" alt="file name">
-       <div class="file_type"><i class=""></i></div>
+    <div class="kuang template " title="file name" alt="file name">
+       <div class="file_type "><i class=""></i></div>
        <div class="file_name">
            <a href="javascript:void(0)" class="beFilledWith">
                <span >file name</span>
@@ -71,11 +84,14 @@
         Loading...
     </div>
 
+    <link rel="stylesheet" type="text/css" href="./css/global.css">
     <link rel="stylesheet" type="text/css" href="./css/catalog_view.css">
-    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript" src="./js/thumbnails.js"></script>
+    <script type="text/javascript" src="./js/global.js"></script>
+    <script type="text/javascript" src="./js/predeterminedVariables.js"></script>
     <script type="text/javascript" src="./js/catalog_view.js"></script>
 </body>
 </html>

@@ -1,5 +1,3 @@
-var SEARCH_PATH = window.location.protocol + '//' +document.domain + '/catalog_view.php';
-
 $(document).ready(function() {
     // connect website and get data
     request = createRequest();
@@ -7,8 +5,13 @@ $(document).ready(function() {
         alert("Unable to create request");
         return ;
     }
+    if (!SEARCH_PATH) {
+        warningWindow('error', 'SEARCH_PATH undecided!');
+        return 0;
+    }
+
     window.history.pushState({}, 0, window.location.href.replace(window.location.pathname, '/'));
-    var url = SEARCH_PATH + '?open=' + window.location.protocol + '//' +document.domain;
+    var url = SEARCH_PATH + '?open=' + window.location.protocol + '//' +document.domain ;
     loading(url, false);
 
     // Align vertically to make the file Icon
@@ -56,6 +59,12 @@ $(document).ready(function() {
         window.history.pushState({}, 0, encodeURI(window.location.href + $(this).attr('title') + '/'));
         loading(encodeURI(SEARCH_PATH + "?open=" + window.location.href ));
     });
+
+    // drop-down menu
+    // 下拉菜单
+    // $('#dropdownMenu1').on('click', function() {
+    //     $('#dropdownMenu2').css('position', 'relative').toggle('slow');
+    // });
 });
 
 $(document).keydown(function(e) {
@@ -79,7 +88,7 @@ function openDir() {
             // if directory empty alert
             if(!returnData.directory)
                 alert('returnData.directory = ' + returnData.directory);
-            $('<li></li>').fadeIn('fast').appendTo($('.breadcrumbMine')).append($('<a href="' + returnData.link + '">' + returnData.directory + '</a>').bind('click', function(event) {
+            $('<li></li>').fadeIn('fast').appendTo($('#path .breadcrumbMine')).append($('<a href="' + returnData.link + '">' + returnData.directory + '</a>').bind('click', function(event) {
                 // Generate directory addresses
                 // 生成目录地址
                 event.preventDefault();
@@ -95,7 +104,7 @@ function openDir() {
             }));
             // $('.breadcrumbMine .current_directory').removeClass('current_directory').addClass('disabled');
             $('.breadcrumbMine .current_directory').removeClass('current_directory');
-            $(".breadcrumbMine li a:last").addClass('current_directory');
+            $(".breadcrumbMine li a:last").addClass('current_directory addr');
 
             // redefiningATag();
             var fileList = returnData.fileList;
@@ -135,11 +144,4 @@ function isError(jsonObject) {
     if(jsonObject.type == 'error')
         return true;
     return false;
-}
-
-// warning window , 
-function warningWindow(title, text) {
-    $('#pop-up-window #myModalLabel').addClass('red').text(title);
-    $('#pop-up-window .modal-body').text(text);
-    $('#pop-up-window').modal('toggle');
 }
