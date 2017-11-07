@@ -5,35 +5,41 @@
     require_once('./includes/User.class.php');
     // return false;
 
-    // Verify that you are already logged in
-    // 验证已经登录
     session_start();
-    if (false && isset($_SESSION['userId'])) {
-        // header('Location:'.WEBSITE_ADDR);
-        $jsonData['type'] = 'success';
-        $jsonData['link'] = WEBSITE_ADDR;
-    } else {
-        if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == "xmlhttprequest") {
-            $userMail = trim($_POST['youMail']);
-            $userPassword = hash('SHA256', trim($_POST['youPassword']));
-            $DB = new Database();
-            $newUsers = User::findUsers($userMail, $userPassword);
-            $usersLength = count($newUsers);
 
-            // validate that user information is successful
-            if ($usersLength) {
-                $userId = $newUsers[0]['user_id'];
-                $_SESSION['userId'] = $userId;
-                $jsonData['type'] = 'success';
-                $jsonData['link'] = WEBSITE_ADDR;
-            } else {
-                $jsonData['type'] = 'error';
-                $jsonData['text'] = 'The user does not exist. Please check the suer information entered.Or <a href="'. REGISTER_PATH .'">Register new users</a>.<br>用户不存在，请检查输入的用户信息。或<a href="'. REGISTER_PATH .'">注册新用户</a>'. $result;
-            }
+    // Has become a site user, jump to the user interface
+    // 已经成为网站用户，跳转至用户界面
+    if (isset($_SESSION['userId'])) {
+        if ($_GET['exit'] == 'true') {
+            $_SESSION = array();
+            if (isset($_COOKIE['userId']))
+                setcookie(session_name(),'',time()-3600);
+            session_destroy();
+        } else
+            header('Location:'.WEBSITE_ADDR);
+    }
 
-            echo json_encode($jsonData);
-            return ;
+    if (isAjax()) {
+        $userMail = trim($_POST['youMail']);
+        $userPassword = hash('SHA256', trim($_POST['youPassword']));
+        $DB = new Database();
+        $newUsers = User::findUsers($userMail, $userPassword);
+        $usersLength = count($newUsers);
+
+        // validate that user information is successful
+        if ($usersLength) {
+            $userId = $newUsers[0]['user_id'];
+            $_SESSION['userId'] = $userId;
+            $jsonData['type'] = 'success';
+            // $jsonData['name'] = empty($newUsers[0]['user_name']) ? $newUsers[0]['user_mail'] ? $newUsers[0]['user_name'];
+            $jsonData['link'] = WEBSITE_ADDR;
+        } else {
+            $jsonData['type'] = 'error';
+            $jsonData['text'] = 'The user does not exist. Please check the suer information entered.Or <a href="'. REGISTER_PATH .'">Register new users</a>.<br>用户不存在，请检查输入的用户信息。或<a href="'. REGISTER_PATH .'">注册新用户</a>'. $result;
         }
+
+        echo json_encode($jsonData);
+        return ;
     }
 
     ob_start();
@@ -95,6 +101,7 @@
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery-validate/1.17.0/jquery.validate.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery-validate/1.17.0/additional-methods.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery-validate/1.17.0/localization/messages_zh.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.min.js"></script>
     <script type="text/javascript" src="./js/login.js"></script>
 <?php 
     $GLOBALS['TEMPLATE']['scriptStream'] = ob_get_contents();

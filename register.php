@@ -17,8 +17,7 @@
     // Has become a site user, jump to the user interface
     // 已经成为网站用户，跳转至用户界面
     if (isset($_SESSION['userId'])) {
-        // header('Location:'.LOGIN_ADDR);
-        die('already logged!');
+        // header('Location:'.WEBSITE_ADDR);
     }
 
     // Come to register and submit registration information
@@ -26,7 +25,7 @@
 
     // Determine whether it is Ajax
     // 判断是否为ajax
-    if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == "xmlhttprequest") {
+    if (isAjax()) {
         header("Content-type:text/html;charset=utf8");
 
         $userMail = trim($_POST['youMail']);
@@ -76,6 +75,7 @@
                     <div class="logo theme_color">
                         <i class="fa fa-cloud fa-3x fa-fw animate-text-hover" aria-hidden="true"></i>
                     </div>
+                    <p><?php echo $_SESSION['userId']; ?></p>
                     <h1>创建账户</h1>
                     <!-- <label for="youName">您的姓名</label> -->
                     <!-- <input type="text" name="youName" id="youName" maxlength="50" class="wide hover_theme_color" data-placement="bottom" title="Please enter the content!请输入内容" value="<?php echo $userName; ?>"> -->
