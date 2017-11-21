@@ -1,4 +1,9 @@
 $(document).ready(function() {
+    // set user name, if exist
+    // 设置用户名，如果存在
+    if ($.cookie('userName'))
+        $('#user_name').text($.cookie('userName'));
+
     // connect website and get data
     request = createRequest();
     if (request == null) {
@@ -10,8 +15,11 @@ $(document).ready(function() {
         return 0;
     }
 
-    window.history.pushState({}, 0, window.location.href.replace(window.location.pathname, '/'));
+    // window.history.pushState({}, 0, window.location.href.replace(window.location.pathname, '/'));
+    // get location url
     var url = SEARCH_PATH + '?open=' + window.location.protocol + '//' +document.domain ;
+    // Gets all the filenames in the URL directory
+    // 获取参数 url 目录下的所有文件名
     loading(url, false);
 
     // Align vertically to make the file Icon
@@ -73,10 +81,10 @@ $(document).keydown(function(e) {
     }
 });
 
+// Load and display all cloud files
+// 加载并显示所有的云文件
 function openDir() {
     if(request.readyState == 4) {
-        if(!request.status)
-            alert('status = ' + request.status);
         if (request.status == 200) {
             $("#content").empty();
             var returnData = eval('(' + request.responseText + ')');
@@ -85,6 +93,7 @@ function openDir() {
                 return;
             }
 
+            // 提示，如果该目录为空
             // if directory empty alert
             if(!returnData.directory)
                 alert('returnData.directory = ' + returnData.directory);
@@ -115,7 +124,8 @@ function openDir() {
                 itm.children().next().children().children().text(fileList[arr].fileName);
                 $('#content').append(itm);
             }
-        }
+        } else
+            warningWindow('error', '后台出问题，请联系网站客服！Backgrounnd connection problem, Please contact the webiste customer service');
     } 
 }
 
@@ -123,6 +133,7 @@ function loading(url, async = 'true') {
     // loading icon
     $('#content').append($('#loading').clone().removeClass('template'));
     request.open('GET', url, async);
+    request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     request.onreadystatechange = openDir;
     request.send(null);
 }

@@ -6,18 +6,20 @@
     // return false;
 
     session_start();
-
     // Has become a site user, jump to the user interface
     // 已经成为网站用户，跳转至用户界面
-    if (isset($_SESSION['userId'])) {
+    if (isset($_SESSION['userId']) || $_COOKIE['userId']) {
         if ($_GET['exit'] == 'true') {
             $_SESSION = array();
-            if (isset($_COOKIE['userId']))
-                setcookie(session_name(),'',time()-3600);
+            if (isset($_COOKIE['userId'])) {
+                setcookie('userId', '', time() - 3600);
+                setcookie('userName', '', time() - 3600);
+                setcookie(session_name(), '', time()-3600);
+            }
             session_destroy();
         } else
             header('Location:'.WEBSITE_ADDR);
-    }
+    } 
 
     if (isAjax()) {
         $userMail = trim($_POST['youMail']);
@@ -30,8 +32,10 @@
         if ($usersLength) {
             $userId = $newUsers[0]['user_id'];
             $_SESSION['userId'] = $userId;
+            setcookie('userId', $userId);
             $jsonData['type'] = 'success';
-            // $jsonData['name'] = empty($newUsers[0]['user_name']) ? $newUsers[0]['user_mail'] ? $newUsers[0]['user_name'];
+            $jsonData['userName'] = $newUsers[0]['user_mail'];
+            setcookie('userName', $jsonData['userName']);
             $jsonData['link'] = WEBSITE_ADDR;
         } else {
             $jsonData['type'] = 'error';
@@ -78,8 +82,6 @@
         </div>
     </div>
 
-    <!-- loading frame -->
-    <link rel="stylesheet" type="text/css" href="./css/font-awesome.css" />
     <!-- loading icon -->
     <div id="loading" class="loading theme_color template">
         <i class="fa fa-circle-o-notch fa-spin fa-4x fa-fw"></i>
@@ -102,6 +104,7 @@
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery-validate/1.17.0/additional-methods.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery-validate/1.17.0/localization/messages_zh.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script type="text/javascript" src="./js/login.js"></script>
 <?php 
     $GLOBALS['TEMPLATE']['scriptStream'] = ob_get_contents();
