@@ -7,28 +7,28 @@
     * 功能       :   连接数据库，并执行sql 语句
     */
 
+    require_once('website_data.php');
+    require_once('info.php');
+
     class Database
     {
-        // MySQL主机
-        // static private $databaseAddr = 'mysql.hostinger.com.hk';
-        static private $databaseAddr = 'www.php6.org';
-        // MySQL数据库名称
-        static private $databaseName = 'u552958104_data';
-        // MySQL用户名
-        static private $databaseUser = 'u552958104_zhihu';
-        // password
-        static private $databasePassword = 'Mysql@587s(2017)';
-        // database link
+        private static $databaseName = DATABASENAME ;
+        private static $databaseAddr = DATABASEADDR;
+        private static $databaseUser = DATABASEUSER;
+        private static $databasePassword = DATABASEPASSWORD;
+        // database status
         private static $dbLink = false;
         // error text
         private $errorText = "";
 
         public function __construct() 
         {
+            if (self::getDB() != false && self::getDb() != null)
+                return self::getDB();
             try
             {
-                self::$dbLink = null;
-                self::$dbLink = new PDO('mysql:dbname='.self::$databaseName.';host='.self::$databaseAddr.';charset=utf8', self::$databaseUser, self::$databasePassword);
+                self::$dbLink == null;
+                self::$dbLink = new PDO('mysql:dbname='. self::$databaseName. ';hosts='. self::$databaseAddr.';charset=utf8',  self::$databaseUser, self::$databasePassword);
                 self::$dbLink->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
                 self::$dbLink->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->setErrorText('');
@@ -70,7 +70,7 @@
                 return $result;
             } catch(PDOException $e) {
                 $this->$errorText = ('failded : '.$e->getMessage());
-                die($e->getMessage());
+                return ($e->getMessage());
             }
         }
 
@@ -81,4 +81,5 @@
             return self::$dbLink;
         }
     }
+
 ?>
