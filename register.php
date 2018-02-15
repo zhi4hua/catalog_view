@@ -1,6 +1,7 @@
 <?php
     // import website data
     require_once('./includes/website_data.php');
+    require_once('./includes/Database.class.php');
 
     // set time zone
     date_default_timezone_set('Asia/Chongqing');
@@ -17,7 +18,7 @@
     // Has become a site user, jump to the user interface
     // 已经成为网站用户，跳转至用户界面
     if (isset($_SESSION['userId'])) {
-        // header('Location:'.WEBSITE_ADDR);
+        header('Location:'.WEBSITE_ADDR);
     }
 
     // Come to register and submit registration information
@@ -37,14 +38,14 @@
             $newUser = new User($userMail, hash("sha256", $userPassword));
             if ($newUser->isError())
                 die('user create error');
-            require_once('./includes/Database.class.php');
             $dbLink = new Database();
             if (Database::getDB()) {
                 // verify that it is repeated
                 if (User::repeat($newUser)) {
                     $returnData['type'] = 'error';
                     $returnData['text'] .= 'Registration failed because the email address has been registered! Please change or log in directly!<br>注册失败，原因该邮件地址已经注册！请换个，或直接<a href="'. LOGIN_PATH. '">登录</a>';
-                    
+                    // return user name
+
                 } else {                    
                     // register user
                     User::addAUser($newUser);
@@ -57,7 +58,7 @@
             } else {
                 $returnData['type'] = 'error';
                 $returnData['text'] = $dbLink->getErrorText();
-                $returnData['text'] = '请联系网站客服，说明无法访问数据库!Please contact the website customer service, indicating that you cannot access the database';
+                // $returnData['text'] = '请联系网站客服，说明无法访问数据库!Please contact the website customer service, indicating that you cannot access the database';
             }
         } else
             $returnData = 'error! password : '.$userPassword.' Confirm password : '.$userConfirmPassword.' mail : '.$userMail;
