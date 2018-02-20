@@ -6,7 +6,7 @@ $(document).ready(function() {
 
     // connect website and get data
     request = createRequest();
-    if (request == null) {
+    if (request == 'null') {
         alert("Unable to create request");
         return ;
     }
@@ -86,8 +86,8 @@ $(document).keydown(function(e) {
 function openDir() {
     if(request.readyState == 4) {
         if (request.status == 200) {
-            $("#content").empty();
             var returnData = eval('(' + request.responseText + ')');
+            alert(request.responseText);
             if(isError(returnData)) {
                 warningWindow(returnData.type, returnData.text);
                 return;
