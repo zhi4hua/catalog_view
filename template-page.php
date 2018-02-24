@@ -1,7 +1,7 @@
 <?php
     require_once('./includes/website_data.php');
     
-    // ob_start();
+    logged();
 ?>
 
 <!DOCTYPE html>
